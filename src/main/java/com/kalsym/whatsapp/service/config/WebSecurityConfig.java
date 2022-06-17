@@ -1,6 +1,7 @@
 package com.kalsym.whatsapp.service.config;
 
 import com.kalsym.whatsapp.service.filter.SessionRequestFilter;
+import com.kalsym.whatsapp.service.MySQLUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,14 +29,28 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    MySQLUserDetailsService mySQLUserDetailsService;
+
+    @Autowired
     private SessionAuthenticationEntryPoint sessionAuthenticationEntryPoint;
 
     @Autowired
     SessionRequestFilter sessionRequestFilter;
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(mySQLUserDetailsService).passwordEncoder(passwordEncoder());
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
