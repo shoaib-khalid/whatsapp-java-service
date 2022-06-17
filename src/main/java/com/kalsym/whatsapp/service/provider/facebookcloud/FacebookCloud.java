@@ -18,7 +18,7 @@ import com.google.gson.Gson;
  */
 public class FacebookCloud {
     
-    public static void sendMessage(WhatsappMessage requestBody) {
+    public static void sendMessage(String url, String token, WhatsappMessage requestBody) {
         String logprefix = "FacebookCloud";
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Start sending message");
         FbRequest req = new FbRequest();
@@ -52,13 +52,12 @@ public class FacebookCloud {
         String jsonRequest = gson.toJson(req);
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Json:"+jsonRequest);
         
-        String targetUrl = "https://graph.facebook.com/v13.0/108744405189669/messages";
         int connectTimeout = 10000;
         int waitTimeout = 30000;
         HashMap httpHeader = new HashMap();
-        httpHeader.put("Authorization","Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD");
+        httpHeader.put("Authorization",token);
         httpHeader.put("Content-Type","application/json");
-        HttpPostConn.SendHttpsRequest("POST", requestBody.getRecipientIds()[0], targetUrl, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+        HttpPostConn.SendHttpsRequest("POST", requestBody.getRecipientIds()[0], url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
         
     }
     /*
