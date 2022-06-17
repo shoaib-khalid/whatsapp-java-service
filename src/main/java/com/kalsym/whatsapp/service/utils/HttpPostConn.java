@@ -5,6 +5,7 @@
  */
 package com.kalsym.whatsapp.service.utils;
 
+import com.kalsym.whatsapp.service.WhatsappWrapperServiceApplication;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -32,7 +33,7 @@ public class HttpPostConn {
     
     public static HttpResult SendHttpsRequest(String httpMethod, String refId, String targetUrl, HashMap httpHeader, String requestBody, int connectTimeout, int waitTimeout) {
         HttpResult response = new HttpResult();
-        String loglocation = "HttpsConn";
+        String logprefix = "HttpsConn";
         
         try {
             // Create a trust manager that does not validate certificate chains
@@ -58,8 +59,7 @@ public class HttpPostConn {
 
             SSLContext sc = SSLContext.getInstance("TLSv1.2");
             sc.init(null, trustAllCerts, new SecureRandom());
-
-            Logger.application.info(refId, loglocation, "Sending Request to :" + targetUrl, "");
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Sending Request to :" + targetUrl, "");
             URL url = new URL(targetUrl);
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             con.setSSLSocketFactory(sc.getSocketFactory());
@@ -71,11 +71,11 @@ public class HttpPostConn {
             
                 
             //Set HTTP Headers
-            Logger.application.info(refId, loglocation, "Set HTTP Header","");
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Set HTTP Header", "");
             Iterator it = httpHeader.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry)it.next();
-                Logger.application.info(refId, loglocation, (String)pair.getKey() + " = " + (String)pair.getValue(), "");
+                Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, (String)pair.getKey() + " = " + (String)pair.getValue(), "");
                 con.setRequestProperty((String)pair.getKey(), (String)pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
@@ -87,14 +87,14 @@ public class HttpPostConn {
                 OutputStream os = con.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
 
-                Logger.application.info(refId, loglocation, "Request JSON :" + requestBody, "");
+                Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request JSON :" + requestBody, "");
                 osw.write(requestBody);
                 osw.flush();
                 osw.close();
             }
 
             int responseCode = con.getResponseCode();
-            Logger.application.info(refId, loglocation, "HTTP Response code:" + responseCode, "");
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "HTTP Response code:" + responseCode, "");
             response.httpResponseCode=responseCode;
             
             BufferedReader in;
@@ -110,7 +110,7 @@ public class HttpPostConn {
             }
             in.close();
 
-            Logger.application.info(refId, loglocation, "Response of topup :" + httpMsgResp.toString(), "");
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Response :" + httpMsgResp.toString(), "");
 
             response.resultCode = 0;
             response.responseString = httpMsgResp.toString();
@@ -119,17 +119,17 @@ public class HttpPostConn {
             if (ex.getMessage().equals("Read timed out")) {
                 response.resultCode = -2;
                 response.responseString = ex.getMessage();
-                Logger.application.error(refId, loglocation, "Exception : " + ex.getMessage(), "", ex);
+                Logger.application.error(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Exception : " + ex.getMessage(), "", ex);
             } else {
                 response.resultCode = -1;
                 response.responseString = ex.getMessage();
-                Logger.application.error(refId, loglocation, "Exception : " + ex.getMessage(), "", ex);
+                Logger.application.error(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Exception : " + ex.getMessage(), "", ex);
             }
         } catch (Exception ex) {
             //exception occur
             response.resultCode = -1;
             response.responseString = ex.getMessage();
-            Logger.application.error(refId, loglocation, "Exception during send request : ", "", ex);
+            Logger.application.error(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Exception : " + ex.getMessage(), "", ex);
         }
 
         return response;

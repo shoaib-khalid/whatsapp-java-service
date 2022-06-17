@@ -6,6 +6,7 @@
 package com.kalsym.whatsapp.service.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
-public class WhatsappMessage {    
+public class WhatsappMessage implements Serializable {    
     private String[] recipientIds;
     private String title;
     private String subTitle;

@@ -43,7 +43,9 @@ public class FacebookCloud {
                 
         Component[] componentList = new Component[1];
         Component component = new Component();
+        component.setType("body");
         component.setParameters(paramList);
+        componentList[0] = component;
         template.setComponents(componentList);
         req.setTemplate(template);
         Gson gson = new Gson();
@@ -54,6 +56,7 @@ public class FacebookCloud {
         int connectTimeout = 10000;
         int waitTimeout = 30000;
         HashMap httpHeader = new HashMap();
+        httpHeader.put("Authorization","Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD");
         httpHeader.put("Content-Type","application/json");
         HttpPostConn.SendHttpsRequest("POST", requestBody.getRecipientIds()[0], targetUrl, httpHeader, jsonRequest, connectTimeout, waitTimeout);
         

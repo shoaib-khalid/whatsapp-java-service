@@ -1,6 +1,5 @@
 package com.kalsym.whatsapp.service.controller;
 
-import com.kalsym.whatsapp.service.model.Response;
 import com.kalsym.whatsapp.service.model.WhatsappMessage;
 import com.kalsym.whatsapp.service.WhatsappWrapperServiceApplication;
 import com.kalsym.whatsapp.service.utils.HttpResponse;
@@ -18,12 +17,16 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping(path = "/templatemessage")
 public class PushTemplateMessageController {
-
+    
+    @Value("${whatsapp.push.url:https://graph.facebook.com/v13.0/108744405189669/messages}")
+    private String whatsappPushUrl;
+    
     @PostMapping(path = {"/push"}, name = "push-template-message-post")   
     public ResponseEntity<HttpResponse> pushMessage(HttpServletRequest request,
             @Valid @RequestBody WhatsappMessage messageBody) throws Exception {

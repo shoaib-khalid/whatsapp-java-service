@@ -2,8 +2,8 @@
     
     <property name="LOG_PATTERN" value="%d %5p [%t] %L - %m%n" />
     <property name="CDR_PATTERN" value="%d{dd-MM-yyyy},%d{HH:mm:ss.SSSZ},%m%n" />
-	<property name="PROJECT_NAME" value="analytic-service"/>
-    <property name="LOG_ROOT" value="/var/kalsym/logs/symplified/analytic-service/v1"/>
+	<property name="PROJECT_NAME" value="whatsapp-java-service"/>
+    <property name="LOG_ROOT" value="/var/kalsym/logs/symplified/whatsapp-java-service/v1"/>
     
     <appender name="CDRAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_ROOT}/cdrs/cdr.log</file>

@@ -135,7 +135,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                com.kalsym.analytic.service.AnalyticServiceApplication
+                                com.kalsym.whatsapp.service.WhatsappWrapperServiceApplication
                             </mainClass>
                         </manifest>
                     </archive>

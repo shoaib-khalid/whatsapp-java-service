@@ -23,5 +23,5 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Component implements Serializable {
     private String type;
-    private Parameter[] Parameters;
+    private Parameter[] parameters;
 }

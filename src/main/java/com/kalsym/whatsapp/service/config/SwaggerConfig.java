@@ -53,11 +53,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("analytic-service")
-                .description("Used for analytic")
+                .title("whatsapp-java-service")
+                .description("Used for sending whatsapp message")
                 .termsOfServiceUrl("not added yet")
                 .license("not added yet")
-                .licenseUrl("").version("3.2.4").build();
+                .licenseUrl("").version("0.0.1").build();
     }
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
