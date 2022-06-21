@@ -40,13 +40,13 @@ public class PushTemplateMessageController {
 
         try {
             FacebookCloud.sendMessage(whatsappPushUrl, whatsappPushToken, messageBody);            
-            response.setSuccessStatus(HttpStatus.CREATED);
+            response.setSuccessStatus(HttpStatus.OK);
         } catch (Exception exp) {
             Logger.application.error(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Error sending message : ", exp);
             response.setMessage(exp.getMessage());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
         }
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Send message completed");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
