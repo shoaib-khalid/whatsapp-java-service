@@ -49,4 +49,6 @@ public class PushTemplateMessageController {
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Send message completed");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+    
+    
 }

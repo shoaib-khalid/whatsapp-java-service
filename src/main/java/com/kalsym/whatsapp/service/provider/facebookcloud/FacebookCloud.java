@@ -41,12 +41,31 @@ public class FacebookCloud {
             paramList[i] = parameter;
         }
                 
-        Component[] componentList = new Component[1];
+        Component[] componentList = new Component[2];
         Component component = new Component();
         component.setType("body");
         component.setParameters(paramList);
         componentList[0] = component;
         template.setComponents(componentList);
+        
+        Parameter[] paramButtonList = new Parameter[requestBody.getTemplateButton().getParameters().length];
+        for (int i=0;i<requestBody.getTemplateButton().getParameters().length;i++) {
+            String param = requestBody.getTemplateButton().getParameters()[i];
+            Parameter parameter = new Parameter();
+            parameter.setText(param);
+            parameter.setType("text");            
+            paramButtonList[i] = parameter;
+        }
+        
+        Component componentButton = new Component();
+        componentButton.setType("button");
+        componentButton.setSubType("url");
+        componentButton.setIndex(0);
+        componentButton.setParameters(paramButtonList);
+        componentList[1] = componentButton;
+        
+        template.setComponents(componentList);
+                
         req.setTemplate(template);
         Gson gson = new Gson();
         String jsonRequest = gson.toJson(req);

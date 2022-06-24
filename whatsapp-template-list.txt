@@ -1,0 +1,26 @@
+----------------------------------------------
+
+name:deliverin_order_being_process
+
+Your order is being processed
+Your order # {{1}} is now being process by {{2}}.
+
+----------------------------------------------
+
+name:deliverin_order_awaiting_pickup_for_self_pickup
+
+Your order is ready
+Your order # {{1}} is ready to be picked up. Thank you for your order.
+
+----------------------------------------------
+
+name:deliverin_order_awaiting_pickup_for_delivery
+
+Your order # {{1}} is ready to be picked up. Our delivery partner is on the way to collect and deliver to you. Click below link to track progress. Thank you for your order.
+
+----------------------------------------------
+
+name:deliverin_order_delivered
+
+Your order has been delivered
+Your order # {{1}} has been delivered. We hope you are happy with your purchase experience. To check out other offering we have from your neighborhood, click the link below.
