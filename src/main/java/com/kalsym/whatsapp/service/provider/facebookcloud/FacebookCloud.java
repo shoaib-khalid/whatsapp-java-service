@@ -32,7 +32,7 @@ public class FacebookCloud {
         lang.setCode("en");
         template.setLanguage(lang);
         
-        Component[] componentList = new Component[2];
+        Component[] componentList = new Component[3];
             
         if (requestBody.getTemplate().getParameters()!=null) {
             Parameter[] paramList = new Parameter[requestBody.getTemplate().getParameters().length];
@@ -66,6 +66,24 @@ public class FacebookCloud {
             componentButton.setIndex(0);
             componentButton.setParameters(paramButtonList);
             componentList[1] = componentButton;                    
+        }
+        
+        if (requestBody.getTemplate().getParametersDocument()!=null) {
+            Parameter[] paramList = new Parameter[requestBody.getTemplate().getParametersDocument().length];
+            for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
+                String param = requestBody.getTemplate().getParameters()[i];
+                Parameter parameter = new Parameter();                
+                parameter.setType("document");
+                Document document = new Document();
+                document.setLink(param);
+                parameter.setDocument(document);
+                paramList[i] = parameter;
+            }                
+            Component component = new Component();
+            component.setType("header");
+            component.setParameters(paramList);
+            componentList[0] = component;
+            template.setComponents(componentList);
         }
         
         template.setComponents(componentList);

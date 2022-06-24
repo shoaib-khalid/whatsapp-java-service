@@ -21,8 +21,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Parameter implements Serializable {
-    private String type;
-    private String text;
-    private Document document;
+public class Document implements Serializable {
+    private String link;
 }
