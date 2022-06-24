@@ -1,5 +1,12 @@
 ----------------------------------------------
 
+name:deliverin_new_order
+
+Your order is being processed
+Thank you, we have received your order. {{1}} have been notified. Please wait for your order update from this number.
+
+----------------------------------------------
+
 name:deliverin_order_being_process
 
 Your order is being processed

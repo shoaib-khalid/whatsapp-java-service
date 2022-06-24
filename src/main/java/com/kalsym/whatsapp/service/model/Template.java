@@ -23,5 +23,6 @@ import lombok.ToString;
 @ToString
 public class Template implements Serializable { 
     private String[] parameters;
+    private String[] parametersButton;
     private String name;   
 }

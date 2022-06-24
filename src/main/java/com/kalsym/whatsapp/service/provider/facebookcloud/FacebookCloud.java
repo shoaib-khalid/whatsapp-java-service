@@ -32,40 +32,44 @@ public class FacebookCloud {
         lang.setCode("en");
         template.setLanguage(lang);
         
-        Parameter[] paramList = new Parameter[requestBody.getTemplate().getParameters().length];
-        for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
-            String param = requestBody.getTemplate().getParameters()[i];
-            Parameter parameter = new Parameter();
-            parameter.setText(param);
-            parameter.setType("text");
-            paramList[i] = parameter;
-        }
-                
         Component[] componentList = new Component[2];
-        Component component = new Component();
-        component.setType("body");
-        component.setParameters(paramList);
-        componentList[0] = component;
-        template.setComponents(componentList);
-        
-        Parameter[] paramButtonList = new Parameter[requestBody.getTemplateButton().getParameters().length];
-        for (int i=0;i<requestBody.getTemplateButton().getParameters().length;i++) {
-            String param = requestBody.getTemplateButton().getParameters()[i];
-            Parameter parameter = new Parameter();
-            parameter.setText(param);
-            parameter.setType("text");            
-            paramButtonList[i] = parameter;
+            
+        if (requestBody.getTemplate().getParameters()!=null) {
+            Parameter[] paramList = new Parameter[requestBody.getTemplate().getParameters().length];
+            for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
+                String param = requestBody.getTemplate().getParameters()[i];
+                Parameter parameter = new Parameter();
+                parameter.setText(param);
+                parameter.setType("text");
+                paramList[i] = parameter;
+            }                
+            Component component = new Component();
+            component.setType("body");
+            component.setParameters(paramList);
+            componentList[0] = component;
+            template.setComponents(componentList);
         }
         
-        Component componentButton = new Component();
-        componentButton.setType("button");
-        componentButton.setSubType("url");
-        componentButton.setIndex(0);
-        componentButton.setParameters(paramButtonList);
-        componentList[1] = componentButton;
+        if (requestBody.getTemplate().getParametersButton()!=null) {
+            Parameter[] paramButtonList = new Parameter[requestBody.getTemplate().getParametersButton().length];
+            for (int i=0;i<requestBody.getTemplate().getParametersButton().length;i++) {
+                String param = requestBody.getTemplate().getParametersButton()[i];
+                Parameter parameter = new Parameter();
+                parameter.setText(param);
+                parameter.setType("text");            
+                paramButtonList[i] = parameter;
+            }
+
+            Component componentButton = new Component();
+            componentButton.setType("button");
+            componentButton.setSubType("url");
+            componentButton.setIndex(0);
+            componentButton.setParameters(paramButtonList);
+            componentList[1] = componentButton;                    
+        }
         
         template.setComponents(componentList);
-                
+        
         req.setTemplate(template);
         Gson gson = new Gson();
         String jsonRequest = gson.toJson(req);
