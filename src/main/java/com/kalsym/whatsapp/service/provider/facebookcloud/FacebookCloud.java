@@ -75,14 +75,14 @@ public class FacebookCloud {
             parameter.setType("document");
             Document document = new Document();
             document.setLink(param);
+            document.setFilename("SaleInvoice.pdf");
             parameter.setDocument(document);
             paramList[0] = parameter;
                             
             Component component = new Component();
             component.setType("header");
             component.setParameters(paramList);
-            componentList[0] = component;
-            template.setComponents(componentList);
+            componentList[2] = component;            
         }
         
         template.setComponents(componentList);

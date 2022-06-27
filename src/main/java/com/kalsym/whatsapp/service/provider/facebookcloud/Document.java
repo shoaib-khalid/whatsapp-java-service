@@ -23,4 +23,5 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Document implements Serializable {
     private String link;
+    private String filename;
 }
