@@ -75,7 +75,9 @@ public class FacebookCloud {
             parameter.setType("document");
             Document document = new Document();
             document.setLink(param);
-            document.setFilename("SaleInvoice.pdf");
+            if (requestBody.getTemplate().getParametersDocumentFileName()!=null) {
+                document.setFilename(requestBody.getTemplate().getParametersDocumentFileName());
+            } 
             parameter.setDocument(document);
             paramList[0] = parameter;
                             
