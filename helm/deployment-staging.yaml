@@ -1,0 +1,182 @@
+affinity: {}
+applicationProdProperties:
+  configmap:
+    application-prod.properties: >-
+      server.port=1001
+
+      spring.data.jpa.repositories.enabled=false
+
+      spring.jpa.hibernate.ddl-auto=none
+
+      spring.datasource.url=jdbc:mysql://my-release-mysql-primary.default.svc.cluster.local:3306/symplified
+
+      spring.datasource.username=root
+
+      spring.datasource.password=kalsym@123
+
+      server.servlet.context-path=/whatsapp-java-service/v1
+
+      session.key=secret
+
+      session.expiry=14400
+
+      whatsapp.push.url=https://graph.facebook.com/v13.0/101552592607485/messages
+
+      whatsapp.push.token=Bearer
+      EAAH0cEAnrjABAOW3CoEfSvedZAWlFZChcU68HhxZB2IOP467VO1zpzJmRLm3vwyY0LnbcMIUyZAtUKaGDE958OVeC8DId2RH3aM6xBZBMVxxkN39nGsLwLUem2we01hy9cbyb4lqKjKZBmBFnl7775r3XrLaYhbeZBTc68hAZA7G8YgCXHByuSt8vGBV7ZBp8GiFWIQgOwmTlygZDZD
+
+      #logging
+
+      logging.config=logback.xml
+
+      logging.level.root=info
+
+      logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} - %-5level [%L] %msg%n
+
+
+      services.user-service.bulk_authorities.url=https://api.symplified.it/user-service/v1/authorities/bulk
+
+
+      services.user-service.session_details=https://api.symplified.it/user-service/v1/sessions/details
+  volumeMount:
+    - mountPath: /home/docker/Software/application-prod.properties
+      name: whatsapp-java-service-approd-vol
+      subPath: application-prod.properties
+  volumes:
+    - configMap: null
+      name: whatsapp-java-service-approd-cm
+applicationProperties:
+  configmap:
+    application.properties: |
+      # Mininal config (please refer production application.properties values)
+      spring.profiles.active=prod
+      proj.name=whatsapp-java-service
+      build.version=@project.version@
+  volumeMount:
+    - mountPath: /home/docker/Software/application.properties
+      name: whatsapp-java-service-ap-vol
+      subPath: application.properties
+  volumes:
+    - configMap:
+        name: whatsapp-java-service-ap-cm
+      name: whatsapp-java-service-ap-vol
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+fullnameOverride: ''
+image:
+  pullPolicy: Always
+  repository: kalsym/whatsapp-java-service
+  tag: 0.0.1
+imagePullSecrets:
+  - name: kalsym-docker-hub
+ingress:
+  annotations: {}
+  className: ''
+  enabled: true
+  hosts:
+    - host: api.symplified.it
+      paths:
+        - path: /whatsapp-java-service/v1
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - api.symplified.it
+      secretName: secret-tls-it
+logback:
+  configmap:
+    logback.xml: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <configuration>
+
+          <property name="LOGS" value="/home/docker/Software/logs/symplified" />
+          <property name="CDRS" value="/home/docker/Software/logs" />
+
+          <property resource="application.properties" />
+
+          <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+              <layout class="ch.qos.logback.classic.PatternLayout">
+                  <Pattern>
+                      %black(%d{ISO8601}) %highlight(%-5level) %yellow(%C{1.}): %msg%n%throwable
+                  </Pattern>
+              </layout>
+          </appender>
+
+          <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+              <file>${LOGS}/whatsapp-java-service/whatsapp-java-service.log</file>
+              <append>true</append>
+              <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                  <!-- rollover daily and when the file reaches 10 MegaBytes -->
+                  <fileNamePattern>${LOGS}/whatsapp-java-service/archived/whatsapp-java-service-%d{yyyy-MM-dd}.%i.log
+                  </fileNamePattern>
+                  <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                      <maxFileSize>10MB</maxFileSize>
+                  </timeBasedFileNamingAndTriggeringPolicy>
+              </rollingPolicy>
+              <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                  <charset>UTF-8</charset>
+                  <layout class="ch.qos.logback.classic.PatternLayout">
+                      <Pattern>%d %p %M %L [%t] - %m%n</Pattern>
+                  </layout>
+              </encoder>
+          </appender>
+
+          <appender name="CDR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+              <file>${CDRS}/whatsapp-java-service-cdr.csv</file>
+              <append>true</append>
+              <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                  <!-- rollover daily and when the file reaches 10 MegaBytes -->
+                  <fileNamePattern>${CDRS}/whatsapp-java-service/cdrs/cdr-%d{yyyy-MM-dd}.%i.csv
+                  </fileNamePattern>
+                  <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                      <maxFileSize>10MB</maxFileSize>
+                  </timeBasedFileNamingAndTriggeringPolicy>
+              </rollingPolicy>
+              <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                  <charset>UTF-8</charset>
+                  <layout class="ch.qos.logback.classic.PatternLayout">
+                      <Pattern>%date{dd:MMM:yyyy;HH:mm:ss.SSS},%m%n</Pattern>
+                  </layout>
+              </encoder>
+          </appender>
+
+          <!-- LOG everything at INFO level -->
+          <root level="INFO">
+              <appender-ref ref="APPLICATION" />
+          </root>
+
+          <logger name="cdr" level="DEBUG" additivity="false">
+              <appender-ref ref="CDR" />
+          </logger>
+
+          <!-- LOG "com.baeldung*" at TRACE level -->
+          <!-- <logger name="application" level="DEBUG" additivity="true">
+              <appender-ref ref="APPLICATION" />
+          </logger> -->
+
+      </configuration>
+  volumeMount:
+    - mountPath: /home/docker/Software/logback.xml
+      name: whatsapp-java-service-lgb-vol
+      subPath: logback.xml
+  volumes:
+    - configMap:
+        name: whatsapp-java-service-lgb-cm
+      name: whatsapp-java-service-lgb-vol
+nameOverride: ''
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext: {}
+replicaCount: 1
+resources: {}
+securityContext: {}
+service:
+  port: 1001
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  create: false
+  name: ''
+tolerations: []
