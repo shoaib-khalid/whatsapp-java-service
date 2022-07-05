@@ -23,7 +23,7 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Component implements Serializable {
     private String type;
-    private String subType;
+    private String sub_type;
     private Integer index;
     private Parameter[] parameters;
 }

@@ -62,7 +62,7 @@ public class FacebookCloud {
 
             Component componentButton = new Component();
             componentButton.setType("button");
-            componentButton.setSubType("url");
+            componentButton.setSub_type("url");
             componentButton.setIndex(0);
             componentButton.setParameters(paramButtonList);
             componentList[1] = componentButton;                    
