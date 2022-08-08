@@ -5,6 +5,7 @@ import com.kalsym.whatsapp.service.WhatsappWrapperServiceApplication;
 import com.kalsym.whatsapp.service.utils.HttpResponse;
 import com.kalsym.whatsapp.service.utils.Logger;
 import com.kalsym.whatsapp.service.provider.facebookcloud.FacebookCloud;
+import com.kalsym.whatsapp.service.utils.HttpResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,15 @@ public class PushTemplateMessageController {
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, messageBody: ", messageBody.toString());
 
         try {
-            FacebookCloud.sendMessage(whatsappPushUrl, whatsappPushToken, messageBody);            
-            response.setSuccessStatus(HttpStatus.OK);
+            HttpResult result = FacebookCloud.sendMessage(whatsappPushUrl, whatsappPushToken, messageBody);            
+            if (result.resultCode==0) {
+                if (result.httpResponseCode==200) {
+                    response.setSuccessStatus(HttpStatus.OK);
+                } else {
+                    response.setMessage("Whatsapp API return error");
+                    return ResponseEntity.status(result.httpResponseCode).body(response);                    
+                }
+            }
         } catch (Exception exp) {
             Logger.application.error(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Error sending message : ", exp);
             response.setMessage(exp.getMessage());

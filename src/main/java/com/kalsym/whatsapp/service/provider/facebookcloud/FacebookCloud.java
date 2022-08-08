@@ -11,6 +11,7 @@ import com.kalsym.whatsapp.service.utils.Logger;
 import com.kalsym.whatsapp.service.utils.HttpPostConn;
 import java.util.HashMap;
 import com.google.gson.Gson;
+import com.kalsym.whatsapp.service.utils.HttpResult;
 
 /**
  *
@@ -18,12 +19,18 @@ import com.google.gson.Gson;
  */
 public class FacebookCloud {
     
-    public static void sendMessage(String url, String token, WhatsappMessage requestBody) {
+    public static HttpResult sendMessage(String url, String token, WhatsappMessage requestBody) {
         String logprefix = "FacebookCloud";
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Start sending message");
+        String receiverMsisdn = requestBody.getRecipientIds()[0];
+        if (receiverMsisdn.startsWith("01")) {
+            receiverMsisdn = "6" + receiverMsisdn;
+        } else if (receiverMsisdn.startsWith("0")) {
+            receiverMsisdn = "92" + receiverMsisdn.substring(1);
+        }
         FbRequest req = new FbRequest();
         req.setMessaging_product("whatsapp");
-        req.setTo(requestBody.getRecipientIds()[0]);
+        req.setTo(receiverMsisdn);
         req.setType("template");
         
         Template template = new Template();
@@ -99,8 +106,8 @@ public class FacebookCloud {
         HashMap httpHeader = new HashMap();
         httpHeader.put("Authorization",token);
         httpHeader.put("Content-Type","application/json");
-        HttpPostConn.SendHttpsRequest("POST", requestBody.getRecipientIds()[0], url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
-        
+        HttpResult result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+        return result;
     }
     /*
     {
