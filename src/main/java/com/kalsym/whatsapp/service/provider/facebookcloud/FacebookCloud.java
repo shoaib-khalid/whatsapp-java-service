@@ -11,6 +11,8 @@ import com.kalsym.whatsapp.service.model.ButtonParameter;
 import com.kalsym.whatsapp.service.utils.Logger;
 import com.kalsym.whatsapp.service.utils.HttpPostConn;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.kalsym.whatsapp.service.utils.HttpResult;
 
@@ -40,8 +42,7 @@ public class FacebookCloud {
         lang.setCode("en");
         template.setLanguage(lang);
         
-        Component[] componentList = new Component[3];
-        int componentIndex=0;
+        List<Component> componentArrayList = new ArrayList<>();
         
         if (requestBody.getTemplate().getParameters()!=null) {
             Parameter[] paramList = new Parameter[requestBody.getTemplate().getParameters().length];
@@ -55,8 +56,7 @@ public class FacebookCloud {
             Component component = new Component();
             component.setType("body");
             component.setParameters(paramList);
-            componentList[componentIndex] = component;
-            template.setComponents(componentList);
+            componentArrayList.add(component);                      
         }
         
         if (requestBody.getTemplate().getParametersButton()!=null) {
@@ -74,8 +74,7 @@ public class FacebookCloud {
             componentButton.setSub_type("url");
             componentButton.setIndex(0);
             componentButton.setParameters(paramButtonList);
-            componentIndex++;
-            componentList[componentIndex] = componentButton;                    
+            componentArrayList.add(componentButton);                     
         }
         
         if (requestBody.getTemplate().getButtonParameters()!=null) {
@@ -95,8 +94,7 @@ public class FacebookCloud {
                 componentButton.setSub_type(buttonParam.getSub_type());
                 componentButton.setIndex(buttonParam.getIndex());
                 componentButton.setParameters(paramList);
-                componentIndex++;
-                componentList[componentIndex] = componentButton;                    
+                componentArrayList.add(componentButton);                                                 
             }
         }
         
@@ -116,10 +114,14 @@ public class FacebookCloud {
             Component component = new Component();
             component.setType("header");
             component.setParameters(paramList);
-            componentIndex++;
-            componentList[componentIndex] = component;            
+            componentArrayList.add(component);            
         }
         
+        int componentCount = componentArrayList.size();
+        Component[] componentList = new Component[componentCount];
+        for (int x=0;x<componentCount;x++) {
+            componentList[x] = componentArrayList.get(x);            
+        }
         template.setComponents(componentList);
         
         req.setTemplate(template);
