@@ -21,11 +21,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
-public class Template implements Serializable { 
-    private String[] parameters;
-    private String[] parametersButton; //old field, cannot remove to remain backward compatibility
-    private ButtonParameter[] buttonParameters; //new field
-    private String parametersDocument;
-    private String parametersDocumentFileName;
-    private String name;   
+public class ButtonParameter implements Serializable { 
+    private String sub_type;
+    private Integer index;
+    private String[] parameters;    
 }

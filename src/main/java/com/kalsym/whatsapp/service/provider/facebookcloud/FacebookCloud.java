@@ -7,6 +7,7 @@ package com.kalsym.whatsapp.service.provider.facebookcloud;
 
 import com.kalsym.whatsapp.service.WhatsappWrapperServiceApplication;
 import com.kalsym.whatsapp.service.model.WhatsappMessage;
+import com.kalsym.whatsapp.service.model.ButtonParameter;
 import com.kalsym.whatsapp.service.utils.Logger;
 import com.kalsym.whatsapp.service.utils.HttpPostConn;
 import java.util.HashMap;
@@ -40,7 +41,8 @@ public class FacebookCloud {
         template.setLanguage(lang);
         
         Component[] componentList = new Component[3];
-            
+        int componentIndex=0;
+        
         if (requestBody.getTemplate().getParameters()!=null) {
             Parameter[] paramList = new Parameter[requestBody.getTemplate().getParameters().length];
             for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
@@ -53,7 +55,7 @@ public class FacebookCloud {
             Component component = new Component();
             component.setType("body");
             component.setParameters(paramList);
-            componentList[0] = component;
+            componentList[componentIndex] = component;
             template.setComponents(componentList);
         }
         
@@ -72,7 +74,30 @@ public class FacebookCloud {
             componentButton.setSub_type("url");
             componentButton.setIndex(0);
             componentButton.setParameters(paramButtonList);
-            componentList[1] = componentButton;                    
+            componentIndex++;
+            componentList[componentIndex] = componentButton;                    
+        }
+        
+        if (requestBody.getTemplate().getButtonParameters()!=null) {
+            for (int i=0;i<requestBody.getTemplate().getButtonParameters().length;i++) {
+                ButtonParameter buttonParam = requestBody.getTemplate().getButtonParameters()[i];
+                Parameter[] paramList = new Parameter[buttonParam.getParameters().length];            
+                for (int x=0;x<buttonParam.getParameters().length;x++) {
+                    String param = buttonParam.getParameters()[x];
+                    Parameter parameter = new Parameter();
+                    parameter.setText(param);
+                    parameter.setType("text");            
+                    paramList[x] = parameter;
+                }
+            
+                Component componentButton = new Component();
+                componentButton.setType("button");
+                componentButton.setSub_type(buttonParam.getSub_type());
+                componentButton.setIndex(buttonParam.getIndex());
+                componentButton.setParameters(paramList);
+                componentIndex++;
+                componentList[componentIndex] = componentButton;                    
+            }
         }
         
         if (requestBody.getTemplate().getParametersDocument()!=null) {
@@ -91,7 +116,8 @@ public class FacebookCloud {
             Component component = new Component();
             component.setType("header");
             component.setParameters(paramList);
-            componentList[2] = component;            
+            componentIndex++;
+            componentList[componentIndex] = component;            
         }
         
         template.setComponents(componentList);

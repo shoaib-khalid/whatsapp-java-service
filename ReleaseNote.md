@@ -1,4 +1,12 @@
 ##################################################
+# Version 0.0.4| 15-Aug-2022
+##################################################
+New request paramter in Template : ButtonParameter[]
+this is duplicate of old parameter parametersButton, but to maintain backward compatibility, old parameter cannot be removed
+This field shall be used for new integration. old parameter String[] parametersButton will be removed
+
+
+##################################################
 # Version 0.0.3| 8-Aug-2022
 ##################################################
 1. Normalize number : 
