@@ -129,9 +129,9 @@ public class WebhookController {
     @GetMapping(path = {"/receive"}, name = "webhook-get")
     @ResponseBody
     public String verifyWebHook(HttpServletRequest request, 
-            @RequestParam(required = false, name = "hub_mode") String mode, 
-            @RequestParam(required = false, name = "hub_challenge") String challenge, 
-            @RequestParam(required = false, name = "hub_verify_token") String token) throws Exception {
+            @RequestParam(required = false, name = "hub.mode") String mode, 
+            @RequestParam(required = false, name = "hub.challenge") String challenge, 
+            @RequestParam(required = false, name = "hub.verify_token") String token) throws Exception {
         String logprefix = request.getRequestURI() + " ";
        
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "URL:  " + request.getRequestURI());
