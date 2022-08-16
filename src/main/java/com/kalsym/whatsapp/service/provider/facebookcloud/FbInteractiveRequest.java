@@ -26,7 +26,6 @@ public class FbInteractiveRequest implements Serializable {
     private String messaging_product;
     private String to;
     private String type;
-    private Template template;
     private String recipient_type;
     private Interactive interactive;    
     

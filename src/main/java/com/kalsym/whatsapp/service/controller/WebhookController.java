@@ -95,6 +95,10 @@ public class WebhookController {
                     replyId = listReply.get("id").getAsString();
                     replyTitle = listReply.get("title").getAsString();
                 }
+            } else if (type.equals("button")) {
+                JsonObject button = messages.get("button").getAsJsonObject();
+                replyId = button.get("payload").getAsString();
+                replyTitle = button.get("text").getAsString();
             }
             if (replyId!=null) {
                 if (replyId.startsWith("STG")) {
