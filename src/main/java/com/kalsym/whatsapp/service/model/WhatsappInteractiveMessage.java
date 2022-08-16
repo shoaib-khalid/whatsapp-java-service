@@ -23,7 +23,7 @@ import com.kalsym.whatsapp.service.provider.facebookcloud.Interactive;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
-public class WhatsappMessage implements Serializable {    
+public class WhatsappInteractiveMessage implements Serializable {    
     private String[] recipientIds;
     private String title;
     private String subTitle;
@@ -36,4 +36,5 @@ public class WhatsappMessage implements Serializable {
     private Boolean guest;
     private String orderId;
     private String merchantToken;
+    private Interactive interactive;
 }

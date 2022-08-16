@@ -7,6 +7,8 @@ package com.kalsym.whatsapp.service.provider.facebookcloud;
 
 import com.kalsym.whatsapp.service.WhatsappWrapperServiceApplication;
 import com.kalsym.whatsapp.service.model.WhatsappMessage;
+import com.kalsym.whatsapp.service.model.WhatsappInteractiveMessage;
+import com.kalsym.whatsapp.service.model.WhatsappNotificationMessage;
 import com.kalsym.whatsapp.service.model.ButtonParameter;
 import com.kalsym.whatsapp.service.utils.Logger;
 import com.kalsym.whatsapp.service.utils.HttpPostConn;
@@ -22,7 +24,7 @@ import com.kalsym.whatsapp.service.utils.HttpResult;
  */
 public class FacebookCloud {
     
-    public static HttpResult sendMessage(String url, String token, WhatsappMessage requestBody) {
+    public static HttpResult sendTemplateMessage(String url, String token, WhatsappMessage requestBody) {
         String logprefix = "FacebookCloud";
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Start sending message");
         String receiverMsisdn = requestBody.getRecipientIds()[0];
@@ -34,6 +36,7 @@ public class FacebookCloud {
         FbRequest req = new FbRequest();
         req.setMessaging_product("whatsapp");
         req.setTo(receiverMsisdn);
+        
         req.setType("template");
         
         Template template = new Template();
@@ -173,4 +176,66 @@ public class FacebookCloud {
    }
 }
     */
+    
+    
+    
+    public static HttpResult sendInteractiveMessage(String url, String token, WhatsappInteractiveMessage requestBody) {
+        String logprefix = "FacebookCloud";
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Start sending message");
+        
+        FbInteractiveRequest req = new FbInteractiveRequest();
+        req.setMessaging_product("whatsapp");
+        req.setRecipient_type("individual");
+        String receiverMsisdn = requestBody.getRecipientIds()[0];
+        if (receiverMsisdn.startsWith("01")) {
+            receiverMsisdn = "6" + receiverMsisdn;
+        } else if (receiverMsisdn.startsWith("0")) {
+            receiverMsisdn = "92" + receiverMsisdn.substring(1);
+        }
+        req.setTo(receiverMsisdn);
+        req.setType("interactive");
+        req.setInteractive(requestBody.getInteractive());
+        
+        Gson gson = new Gson();
+        String jsonRequest = gson.toJson(req);
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Json:" + jsonRequest);
+
+        int connectTimeout = 10000;
+        int waitTimeout = 30000;
+        HashMap httpHeader = new HashMap();
+        httpHeader.put("Content-Type", "application/json");
+        httpHeader.put("Authorization", token);
+        HttpResult result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+        return result;
+    }
+    
+    
+    public static HttpResult sendNotificationMessage(String url, String token, WhatsappNotificationMessage requestBody) {
+        String logprefix = "FacebookCloud";
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Start sending message");
+        
+        FbNotificationRequest req = new FbNotificationRequest();
+        req.setMessaging_product("whatsapp");
+        req.setRecipient_type("individual");
+        String receiverMsisdn = requestBody.getRecipientIds()[0];
+        if (receiverMsisdn.startsWith("01")) {
+            receiverMsisdn = "6" + receiverMsisdn;
+        } else if (receiverMsisdn.startsWith("0")) {
+            receiverMsisdn = "92" + receiverMsisdn.substring(1);
+        }
+        req.setTo(receiverMsisdn);        
+        req.setText(new Text(requestBody.getText()));
+        
+        Gson gson = new Gson();
+        String jsonRequest = gson.toJson(req);
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Json:" + jsonRequest);
+
+        int connectTimeout = 10000;
+        int waitTimeout = 30000;
+        HashMap httpHeader = new HashMap();
+        httpHeader.put("Content-Type", "application/json");
+        httpHeader.put("Authorization", token);
+        HttpResult result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+        return result;
+    }
 }

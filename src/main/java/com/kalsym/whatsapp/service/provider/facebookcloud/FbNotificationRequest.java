@@ -21,11 +21,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FbRequest implements Serializable {
+public class FbNotificationRequest implements Serializable {
     
     private String messaging_product;
     private String to;
     private String type;
-    private Template template;    
+    private Template template;
+    private String recipient_type;    
+    private Text text; 
     
 }
