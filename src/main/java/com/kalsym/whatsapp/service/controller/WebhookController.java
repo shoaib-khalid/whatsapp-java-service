@@ -38,14 +38,14 @@ public class WebhookController {
     private String productionOrderServiceUrl;
     
     @PostMapping(path = {"/receive"}, name = "webhook-post")
-    public ResponseEntity<HttpResponse> webhook(HttpServletRequest request, @RequestBody JsonObject json) throws Exception {
+    public ResponseEntity<HttpResponse> webhook(HttpServletRequest request, @RequestBody String json) throws Exception {
         String logprefix = request.getRequestURI() + " ";
         HttpResponse response = new HttpResponse(request.getRequestURI());
 
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "callback-message-get, URL:  " + request.getRequestURI());
-        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Body:  " + json.toString());
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Body:  " + json);
         
-        JsonObject jsonResp = new Gson().fromJson(String.valueOf(json), JsonObject.class);
+        JsonObject jsonResp = new Gson().fromJson(json, JsonObject.class);
         JsonObject entry = jsonResp.get("entry").getAsJsonArray().get(0).getAsJsonObject();
         JsonObject changes = entry.get("changes").getAsJsonArray().get(0).getAsJsonObject();
         
