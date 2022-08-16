@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .authorizeRequests().antMatchers(
                         "/**",
+                        "/webhook/**",
                         "/error",
                         "/v2/api-docs",
                         "/configuration/ui",
