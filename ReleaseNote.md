@@ -3,6 +3,11 @@
 ##################################################
 New url for whatsapp webhook to receive msg from whatsapp
 
+##New config:
+route.incoming.default=https://www.kalsym.com/whatsapp/webhook.php
+route.incoming.staging.url=https://api.symplified.it/order-service/v1/whatsapp/receive
+route.incoming.production.url=https://api.symplified.biz/order-service/v1/whatsapp/receive
+
 
 ##################################################
 # Version 0.0.4| 15-Aug-2022

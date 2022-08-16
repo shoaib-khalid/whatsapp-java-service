@@ -28,13 +28,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RequestMapping(path = "/webhook")
 public class WebhookController {
     
-    @Value("${route.default:https://www.kalsym.com/whatsapp/webhook.php}")
+    @Value("${route.incoming.default:https://www.kalsym.com/whatsapp/webhook.php}")
     private String defaultRouteUrl;
     
-    @Value("${route.staging.url:https://api.symplified.it/order-service/v1/whatsapp/receive}")
+    @Value("${route.incoming.staging.url:https://api.symplified.it/order-service/v1/whatsapp/receive}")
     private String stagingOrderServiceUrl;
     
-    @Value("${route.production.url:https://api.symplified.biz/order-service/v1/whatsapp/receive}")
+    @Value("${route.incoming.production.url:https://api.symplified.biz/order-service/v1/whatsapp/receive}")
     private String productionOrderServiceUrl;
     
     @PostMapping(path = {"/receive"}, name = "webhook-post")
