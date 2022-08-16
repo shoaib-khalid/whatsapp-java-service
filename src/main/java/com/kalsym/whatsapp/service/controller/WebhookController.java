@@ -43,6 +43,8 @@ public class WebhookController {
         HttpResponse response = new HttpResponse(request.getRequestURI());
 
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "callback-message-get, URL:  " + request.getRequestURI());
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Body:  " + json.toString());
+        
         JsonObject jsonResp = new Gson().fromJson(String.valueOf(json), JsonObject.class);
         JsonObject entry = jsonResp.get("entry").getAsJsonArray().get(0).getAsJsonObject();
         JsonObject changes = entry.get("changes").getAsJsonArray().get(0).getAsJsonObject();
