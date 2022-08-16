@@ -99,7 +99,7 @@ public class WebhookController {
             if (replyId!=null) {
                 if (replyId.startsWith("STG")) {
                     url = stagingOrderServiceUrl;
-                } else {
+                } else if (replyId.startsWith("PROD")) {
                     url = productionOrderServiceUrl;
                 }
             }
