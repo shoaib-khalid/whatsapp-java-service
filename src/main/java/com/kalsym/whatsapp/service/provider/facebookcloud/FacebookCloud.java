@@ -52,6 +52,7 @@ public class FacebookCloud {
             for (int i=0;i<requestBody.getTemplate().getParametersHeader().length;i++) {
                 String param = requestBody.getTemplate().getParametersHeader()[i];
                 Parameter parameter = new Parameter();
+                if (param==null) param = "null";
                 parameter.setText(param);
                 parameter.setType("text");
                 paramList[i] = parameter;
@@ -67,6 +68,7 @@ public class FacebookCloud {
             for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
                 String param = requestBody.getTemplate().getParameters()[i];
                 Parameter parameter = new Parameter();
+                if (param==null) param = "null";
                 parameter.setText(param);
                 parameter.setType("text");
                 paramList[i] = parameter;
@@ -82,6 +84,7 @@ public class FacebookCloud {
             for (int i=0;i<requestBody.getTemplate().getParametersButton().length;i++) {
                 String param = requestBody.getTemplate().getParametersButton()[i];
                 Parameter parameter = new Parameter();
+                if (param==null) param = "null";
                 parameter.setText(param);
                 parameter.setType("text");            
                 paramButtonList[i] = parameter;
@@ -102,6 +105,7 @@ public class FacebookCloud {
                 for (int x=0;x<buttonParam.getParameters().length;x++) {
                     String param = buttonParam.getParameters()[x];
                     Parameter parameter = new Parameter();
+                    if (param==null) param = "null";
                     parameter.setText(param);
                     parameter.setType("text");            
                     paramList[x] = parameter;
