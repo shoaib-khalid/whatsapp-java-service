@@ -49,8 +49,8 @@ public class FacebookCloud {
         
         if (requestBody.getTemplate().getParametersHeader()!=null) {
             Parameter[] paramList = new Parameter[requestBody.getTemplate().getParametersHeader().length];
-            for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
-                String param = requestBody.getTemplate().getParameters()[i];
+            for (int i=0;i<requestBody.getTemplate().getParametersHeader().length;i++) {
+                String param = requestBody.getTemplate().getParametersHeader()[i];
                 Parameter parameter = new Parameter();
                 parameter.setText(param);
                 parameter.setType("text");
