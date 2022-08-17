@@ -23,6 +23,7 @@ import lombok.ToString;
 @ToString
 public class Template implements Serializable { 
     private String[] parameters;
+    private String[] parametersHeader;
     private String[] parametersButton; //old field, cannot remove to remain backward compatibility
     private ButtonParameter[] buttonParameters; //new field
     private String parametersDocument;

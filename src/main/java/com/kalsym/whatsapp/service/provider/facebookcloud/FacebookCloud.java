@@ -47,6 +47,21 @@ public class FacebookCloud {
         
         List<Component> componentArrayList = new ArrayList<>();
         
+        if (requestBody.getTemplate().getParametersHeader()!=null) {
+            Parameter[] paramList = new Parameter[requestBody.getTemplate().getParametersHeader().length];
+            for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
+                String param = requestBody.getTemplate().getParameters()[i];
+                Parameter parameter = new Parameter();
+                parameter.setText(param);
+                parameter.setType("text");
+                paramList[i] = parameter;
+            }                
+            Component component = new Component();
+            component.setType("header");
+            component.setParameters(paramList);
+            componentArrayList.add(component);                      
+        }
+        
         if (requestBody.getTemplate().getParameters()!=null) {
             Parameter[] paramList = new Parameter[requestBody.getTemplate().getParameters().length];
             for (int i=0;i<requestBody.getTemplate().getParameters().length;i++) {
