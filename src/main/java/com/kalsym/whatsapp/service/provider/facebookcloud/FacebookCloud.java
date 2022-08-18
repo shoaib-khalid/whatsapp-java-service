@@ -228,7 +228,7 @@ public class FacebookCloud {
             String msgBody = fullMsgBody;
             if (fullMsgBody.length()>1024) {
                 msgBody = fullMsgBody.substring(0, 1024);
-                fullMsgBody = msgBody.substring(1024);
+                fullMsgBody = fullMsgBody.substring(1024);
             }
             
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "MsgPart["+i+"/"+msgCount+"]:" + msgBody);
