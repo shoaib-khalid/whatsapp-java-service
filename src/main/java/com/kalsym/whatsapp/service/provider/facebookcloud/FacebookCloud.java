@@ -215,16 +215,40 @@ public class FacebookCloud {
         req.setType("interactive");
         req.setInteractive(requestBody.getInteractive());
         
-        Gson gson = new Gson();
-        String jsonRequest = gson.toJson(req);
-        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Json:" + jsonRequest);
+        int msgLen = requestBody.getInteractive().getBody().getText().length();
+        int msgCount = (int) Math.ceil((double) msgLen / 1024);
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "msgLen:"+msgLen+" msgCount:" + msgCount);
+        
+        HttpResult result = null;
+        String fullMsgBody = requestBody.getInteractive().getBody().getText();
+        
+        for (int i=0;i<msgCount;i++) {
+            Gson gson = new Gson();
+            
+            String msgBody = fullMsgBody;
+            if (fullMsgBody.length()>1024) {
+                msgBody = fullMsgBody.substring(0, 1024);
+                fullMsgBody = msgBody.substring(1024);
+            }
+            
+            requestBody.getInteractive().getBody().setText(msgBody);
+            
+            
+            String jsonRequest = gson.toJson(req);
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Json:" + jsonRequest);
 
-        int connectTimeout = 10000;
-        int waitTimeout = 30000;
-        HashMap httpHeader = new HashMap();
-        httpHeader.put("Content-Type", "application/json");
-        httpHeader.put("Authorization", token);
-        HttpResult result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+            int connectTimeout = 10000;
+            int waitTimeout = 30000;
+            HashMap httpHeader = new HashMap();
+            httpHeader.put("Content-Type", "application/json");
+            httpHeader.put("Authorization", token);
+            result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ex) {
+                
+            }
+        }
         return result;
     }
     
