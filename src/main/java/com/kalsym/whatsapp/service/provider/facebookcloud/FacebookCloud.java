@@ -213,7 +213,7 @@ public class FacebookCloud {
         }
         req.setTo(receiverMsisdn);
         req.setType("interactive");
-        req.setInteractive(requestBody.getInteractive());
+        
         
         int msgLen = requestBody.getInteractive().getBody().getText().length();
         int msgCount = (int) Math.ceil((double) msgLen / 1024);
@@ -222,7 +222,7 @@ public class FacebookCloud {
         HttpResult result = null;
         String fullMsgBody = requestBody.getInteractive().getBody().getText();
         
-        for (int i=0;i<msgCount;i++) {
+        for (int i=1;i<=msgCount;i++) {
             Gson gson = new Gson();
             
             String msgBody = fullMsgBody;
@@ -231,8 +231,10 @@ public class FacebookCloud {
                 fullMsgBody = msgBody.substring(1024);
             }
             
-            requestBody.getInteractive().getBody().setText(msgBody);
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "MsgPart["+i+"/"+msgCount+"]:" + msgBody);
             
+            requestBody.getInteractive().getBody().setText(msgBody);
+            req.setInteractive(requestBody.getInteractive());
             
             String jsonRequest = gson.toJson(req);
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Request Json:" + jsonRequest);
