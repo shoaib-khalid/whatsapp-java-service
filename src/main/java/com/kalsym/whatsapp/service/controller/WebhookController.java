@@ -36,6 +36,9 @@ public class WebhookController {
     
     @Value("${route.incoming.production.url:https://api.symplified.biz/order-service/v1/whatsapp/receive}")
     private String productionOrderServiceUrl;
+
+    @Value("${route.incoming.survey.url:https://api.symplified.it/whatsapp-survey-service/v1/message/survey/webhook}")
+    private String surveyUrl;
     
     @PostMapping(path = {"/receive"}, name = "webhook-post")
     public ResponseEntity<HttpResponse> webhook(HttpServletRequest request, @RequestBody String json) throws Exception {
@@ -105,6 +108,8 @@ public class WebhookController {
                     url = stagingOrderServiceUrl;
                 } else if (replyId.startsWith("PROD")) {
                     url = productionOrderServiceUrl;
+                } else if (replyId.startsWith("SUR")) {
+                    url = surveyUrl;
                 }
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:"+phone+" UserReply: " + replyId+" -> "+replyTitle);        
