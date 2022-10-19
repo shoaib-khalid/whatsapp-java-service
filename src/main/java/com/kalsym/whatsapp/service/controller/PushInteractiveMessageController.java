@@ -25,23 +25,39 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RequestMapping(path = "/interactive")
 public class PushInteractiveMessageController {
     
-    @Value("${whatsapp.push.url:https://graph.facebook.com/v13.0/108744405189669/messages}")
+    //https://graph.facebook.com/v15.0/{phone-number-ID}/message_templates.
+    
+    @Value("${whatsapp.push.url.60125063299:https://graph.facebook.com/v13.0/101552592607485/messages}")
     private String whatsappPushUrl;
     
-    @Value("${whatsapp.push.token:Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD}")
+    @Value("${whatsapp.push.token.60125063299:Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD}")
     private String whatsappPushToken;
     
-    @PostMapping(path = {"/push"}, name = "push-interactive-message-post")   
+    @Value("${whatsapp.push.url.60356300997:https://graph.facebook.com/v13.0/104564742449784/messages}")
+    private String whatsappPushUrlDineIn;
+    
+    @Value("${whatsapp.push.token.60356300997:Bearer EAASHDrLZARfcBANifrFeuY77EETqNTKOmfIthFLJuNtRHy3hU2ZAL7OJSZAlojaXDZBtkaUiddZAZAG08qPugBZCCTjbsAT6X2ZBkLLA2thYEF7dFbsNB0ZBlZAhYk0yZAsZCG6szSliMvDOXkk9nGDigNQstViCydgj9QABh0eAVVXRXe6X23DCpoSr2ztldPchpoV79rzC2CbzD4K5xUDjXypT}")
+    private String whatsappPushTokenDineIn;
+    
+    @PostMapping(path = {"/push/{senderMsisdn}"}, name = "push-interactive-message-post")   
     public ResponseEntity<HttpResponse> pushMessage(HttpServletRequest request,
-            @Valid @RequestBody WhatsappInteractiveMessage messageBody) throws Exception {
+            @Valid @RequestBody WhatsappInteractiveMessage messageBody,
+            @PathVariable(required = false) String senderMsisdn) throws Exception {
         String logprefix = request.getRequestURI() + " ";
         HttpResponse response = new HttpResponse(request.getRequestURI());
 
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, URL:  " + request.getRequestURI());
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, messageBody: ", messageBody.toString());
-
+        
+        String url = whatsappPushUrl;
+        String token = whatsappPushToken;
+        if (senderMsisdn.equals("60356300997")) {
+            url = whatsappPushUrlDineIn;
+            token = whatsappPushTokenDineIn;
+        } 
+        
         try {
-            HttpResult result = FacebookCloud.sendInteractiveMessage(whatsappPushUrl, whatsappPushToken, messageBody);            
+            HttpResult result = FacebookCloud.sendInteractiveMessage(url, token, messageBody);            
             if (result.resultCode==0) {
                 if (result.httpResponseCode==200) {
                     response.setSuccessStatus(HttpStatus.OK);
@@ -60,17 +76,25 @@ public class PushInteractiveMessageController {
     }
     
     
-    @PostMapping(path = {"/notification"}, name = "push-notification-message-post")   
+    @PostMapping(path = {"/notification/{senderMsisdn}"}, name = "push-notification-message-post")   
     public ResponseEntity<HttpResponse> pushNotificationMessage(HttpServletRequest request,
-            @Valid @RequestBody WhatsappNotificationMessage messageBody) throws Exception {
+            @Valid @RequestBody WhatsappNotificationMessage messageBody,
+            @PathVariable(required = false) String senderMsisdn) throws Exception {
         String logprefix = request.getRequestURI() + " ";
         HttpResponse response = new HttpResponse(request.getRequestURI());
 
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, URL:  " + request.getRequestURI());
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, messageBody: ", messageBody.toString());
-
+        
+        String url = whatsappPushUrl;
+        String token = whatsappPushToken;
+        if (senderMsisdn.equals("60356300997")) {
+            url = whatsappPushUrlDineIn;
+            token = whatsappPushTokenDineIn;
+        } 
+        
         try {
-            HttpResult result = FacebookCloud.sendNotificationMessage(whatsappPushUrl, whatsappPushToken, messageBody);            
+            HttpResult result = FacebookCloud.sendNotificationMessage(url, token, messageBody);            
             if (result.resultCode==0) {
                 if (result.httpResponseCode==200) {
                     response.setSuccessStatus(HttpStatus.OK);

@@ -4,6 +4,13 @@
 New url for survey-whatsapp webhook to receive msg from whatsapp
 
 ##################################################
+##################################################
+# Version 1.2.0| 19-Oct-2022
+##################################################
+New msisdn for Dine-In
+
+
+##################################################
 # Version 1.0.0| 16-Aug-2022
 ##################################################
 New url for whatsapp webhook to receive msg from whatsapp
