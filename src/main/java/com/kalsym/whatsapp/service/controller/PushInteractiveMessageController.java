@@ -51,7 +51,7 @@ public class PushInteractiveMessageController {
         
         String url = whatsappPushUrl;
         String token = whatsappPushToken;
-        if (senderMsisdn.equals("60356300997")) {
+        if (senderMsisdn!=null && senderMsisdn.equals("60356300997")) {
             url = whatsappPushUrlDineIn;
             token = whatsappPushTokenDineIn;
         } 
@@ -88,7 +88,7 @@ public class PushInteractiveMessageController {
         
         String url = whatsappPushUrl;
         String token = whatsappPushToken;
-        if (senderMsisdn.equals("60356300997")) {
+        if (senderMsisdn!=null && senderMsisdn.equals("60356300997")) {
             url = whatsappPushUrlDineIn;
             token = whatsappPushTokenDineIn;
         } 
