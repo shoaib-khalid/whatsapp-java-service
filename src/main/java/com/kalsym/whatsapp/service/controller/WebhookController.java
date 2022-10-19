@@ -120,7 +120,7 @@ public class WebhookController {
             type = "input";
             phone = messages.get("from").getAsString();
             userInput = messages.get("text").getAsJsonObject().get("body").getAsString();
-            if (!userInput.equals("store")) {
+            if (!userInput.equalsIgnoreCase("store")) {
                 url = null;
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserInput:" + userInput);
