@@ -36,10 +36,10 @@ public class PushTemplateMessageController {
     @Value("${whatsapp.push.token.60356300997:Bearer EAASHDrLZARfcBANifrFeuY77EETqNTKOmfIthFLJuNtRHy3hU2ZAL7OJSZAlojaXDZBtkaUiddZAZAG08qPugBZCCTjbsAT6X2ZBkLLA2thYEF7dFbsNB0ZBlZAhYk0yZAsZCG6szSliMvDOXkk9nGDigNQstViCydgj9QABh0eAVVXRXe6X23DCpoSr2ztldPchpoV79rzC2CbzD4K5xUDjXypT}")
     private String whatsappPushTokenDineIn;
     
-    @PostMapping(path = {"/push/{senderMsisdn}"}, name = "push-template-message-post")   
+    @PostMapping(path = {"/push"}, name = "push-template-message-post")   
     public ResponseEntity<HttpResponse> pushMessage(HttpServletRequest request,
             @Valid @RequestBody WhatsappMessage messageBody,
-            @PathVariable(required = false) String senderMsisdn) throws Exception {
+            @RequestParam(required = false) String senderMsisdn) throws Exception {
         String logprefix = request.getRequestURI() + " ";
         HttpResponse response = new HttpResponse(request.getRequestURI());
 
