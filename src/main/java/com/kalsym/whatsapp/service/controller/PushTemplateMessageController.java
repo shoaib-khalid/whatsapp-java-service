@@ -52,6 +52,11 @@ public class PushTemplateMessageController {
             url = whatsappPushUrlDineIn;
             token = whatsappPushTokenDineIn;
         } 
+                
+        if (messageBody.getTemplate().getName().startsWith("dinein")) {
+            url = whatsappPushUrlDineIn;
+            token = whatsappPushTokenDineIn;
+        }
         
         try {
             HttpResult result = FacebookCloud.sendTemplateMessage(url, token, messageBody);            
