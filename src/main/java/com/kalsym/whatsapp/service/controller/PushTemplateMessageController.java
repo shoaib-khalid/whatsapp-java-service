@@ -36,6 +36,12 @@ public class PushTemplateMessageController {
     @Value("${whatsapp.push.token.60356300997:Bearer EAASHDrLZARfcBANifrFeuY77EETqNTKOmfIthFLJuNtRHy3hU2ZAL7OJSZAlojaXDZBtkaUiddZAZAG08qPugBZCCTjbsAT6X2ZBkLLA2thYEF7dFbsNB0ZBlZAhYk0yZAsZCG6szSliMvDOXkk9nGDigNQstViCydgj9QABh0eAVVXRXe6X23DCpoSr2ztldPchpoV79rzC2CbzD4K5xUDjXypT}")
     private String whatsappPushTokenDineIn;
     
+    @Value("${whatsapp.push.url.92516120000:https://graph.facebook.com/v15.0/108910671852368/messages}")
+    private String whatsappPushUrlEasyDukan;
+    
+    @Value("${whatsapp.push.token.92516120000:Bearer EAAG9yFXAfwABACu6stKw1YOpqMA1KJ8lVnLLl0SCdFI8vf4SxVa39x18tjIrxG5rrBgDaSjjI2bLZAW4mlv1XlOKk9Eakc2pGDZBi8YK00qZBCkUiSM8hdwiPsm54TW0C5nTZBZCxKgI2gtG2CSdMdDoxpCKFoN3gWHHvq65mcZAHSt4S7z2tt19w1fsX5AZAXFnSaBju0PZAAZDZD}")
+    private String whatsappPushTokenEasyDukan;
+    
     @PostMapping(path = {"/push"}, name = "push-template-message-post")   
     public ResponseEntity<HttpResponse> pushMessage(HttpServletRequest request,
             @Valid @RequestBody WhatsappMessage messageBody,
@@ -56,6 +62,11 @@ public class PushTemplateMessageController {
         if (messageBody.getTemplate().getName().startsWith("dinein")) {
             url = whatsappPushUrlDineIn;
             token = whatsappPushTokenDineIn;
+        }
+        
+        if (messageBody.getTemplate().getName().startsWith("easydukan")) {
+            url = whatsappPushUrlEasyDukan;
+            token = whatsappPushTokenEasyDukan;
         }
         
         try {

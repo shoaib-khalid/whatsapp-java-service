@@ -1,0 +1,27 @@
+{
+  "guest": false,
+  "menuItems": null,
+  "merchantToken": null,
+  "orderId": "c5354437-e8cd-41d7-864f-e6306ac644e8",
+  "recipientIds": [
+    "60133731869"
+  ],
+  "refId": null,
+  "referenceId": "60133429331",
+  "template": {    
+    "name": "dinein_cancel_order",
+    "parameters": [
+      "ATF00441"
+    ],
+    "parametersButton":null,
+    "parametersHeader":null,
+    "buttonParameters":null,
+    "parametersDocument":null,
+    "parametersDocumentFileName":null
+   
+  },
+  "title": null,
+  "subTitle":null,
+  "url": null,
+  "urlType": null
+}
