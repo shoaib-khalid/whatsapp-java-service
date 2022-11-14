@@ -1,9 +1,19 @@
 ##################################################
 ##################################################
+# Version 1.2.2| 14-Nov-2022
+##################################################
+Different webhook url for dinein & easydukan
+
+
+##################################################
+##################################################
 # Version 1.2.1| 2-Nov-2022
 ##################################################
 New msisdn for EasyDukan
 
+##Config changes:
+whatsapp.push.url.92516120000=https://graph.facebook.com/v15.0/108910671852368/messages
+whatsapp.push.token.92516120000=Bearer EAAG9yFXAfwABACu6stKw1YOpqMA1KJ8lVnLLl0SCdFI8vf4SxVa39x18tjIrxG5rrBgDaSjjI2bLZAW4mlv1XlOKk9Eakc2pGDZBi8YK00qZBCkUiSM8hdwiPsm54TW0C5nTZBZCxKgI2gtG2CSdMdDoxpCKFoN3gWHHvq65mcZAHSt4S7z2tt19w1fsX5AZAXFnSaBju0PZAAZDZD
 
 ##################################################
 # Version 1.0.1| 29-Sept-2022
