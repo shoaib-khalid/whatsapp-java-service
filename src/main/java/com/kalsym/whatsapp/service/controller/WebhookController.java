@@ -40,6 +40,10 @@ public class WebhookController {
 
     @Value("${route.incoming.survey.url:https://api.symplified.it/whatsapp-survey-service/v1/message/survey/webhook}")
     private String surveyUrl;
+    
+    @Value("${route.incoming.familyplan.url:http://209.58.160.107:9566/message/test/webhook}")
+    private String familyPlanUrl;
+    
 
     @PostMapping(path = {"/receive"}, name = "webhook-post")
     public ResponseEntity<HttpResponse> webhook(HttpServletRequest request, @RequestBody String json) throws Exception {
@@ -112,6 +116,8 @@ public class WebhookController {
                     url = productionOrderServiceUrl;
                 } else if (replyId.startsWith("SUR")) {
                     url = surveyUrl;
+                } else if (replyId.startsWith("FAMILY")) {
+                    url = familyPlanUrl;
                 }
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserReply: " + replyId + " -> " + replyTitle);
@@ -120,9 +126,16 @@ public class WebhookController {
             type = "input";
             phone = messages.get("from").getAsString();
             userInput = messages.get("text").getAsJsonObject().get("body").getAsString();
-            if (!userInput.equalsIgnoreCase("store")) {
+            if (userInput.toLowerCase().startsWith("family")) {
+               //for family plan
+               url = familyPlanUrl;
+            } else if (userInput.equalsIgnoreCase("store")) {
+                //use default
+                url = defaultRouteUrl;
+            } else {
+                //dont process other request
                 url = null;
-            }
+            } 
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserInput:" + userInput);
         }
 
@@ -368,6 +381,8 @@ public class WebhookController {
                     url = productionOrderServiceUrl;
                 } else if (replyId.startsWith("SUR")) {
                     url = surveyUrl;
+                } else if (replyId.startsWith("FAMILY")) {
+                    url = familyPlanUrl;
                 }
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserReply: " + replyId + " -> " + replyTitle);
