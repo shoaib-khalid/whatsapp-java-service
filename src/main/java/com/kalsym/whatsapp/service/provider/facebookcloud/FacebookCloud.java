@@ -11,7 +11,7 @@ import com.kalsym.whatsapp.service.model.WhatsappInteractiveMessage;
 import com.kalsym.whatsapp.service.model.WhatsappNotificationMessage;
 import com.kalsym.whatsapp.service.model.ButtonParameter;
 import com.kalsym.whatsapp.service.utils.Logger;
-import com.kalsym.whatsapp.service.utils.HttpPostConn;
+import com.kalsym.whatsapp.service.utils.HttpsPostConn;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -156,7 +156,7 @@ public class FacebookCloud {
         HashMap httpHeader = new HashMap();
         httpHeader.put("Authorization",token);
         httpHeader.put("Content-Type","application/json");
-        HttpResult result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+        HttpResult result = HttpsPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
         return result;
     }
     /*
@@ -244,7 +244,7 @@ public class FacebookCloud {
             HashMap httpHeader = new HashMap();
             httpHeader.put("Content-Type", "application/json");
             httpHeader.put("Authorization", token);
-            result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+            result = HttpsPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
             try {
                 Thread.sleep(1000);
             } catch (Exception ex) {
@@ -280,7 +280,7 @@ public class FacebookCloud {
         HashMap httpHeader = new HashMap();
         httpHeader.put("Content-Type", "application/json");
         httpHeader.put("Authorization", token);
-        HttpResult result = HttpPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
+        HttpResult result = HttpsPostConn.SendHttpsRequest("POST", receiverMsisdn, url, httpHeader, jsonRequest, connectTimeout, waitTimeout);
         return result;
     }
 }

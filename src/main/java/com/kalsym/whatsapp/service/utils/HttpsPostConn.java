@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -30,21 +29,46 @@ import javax.net.ssl.X509TrustManager;
  *
  * @author user
  */
-public class HttpPostConn {
+public class HttpsPostConn {
     
-    public static HttpResult SendHttpRequest(String httpMethod, String refId, String targetUrl, HashMap httpHeader, String requestBody, int connectTimeout, int waitTimeout) {
+    public static HttpResult SendHttpsRequest(String httpMethod, String refId, String targetUrl, HashMap httpHeader, String requestBody, int connectTimeout, int waitTimeout) {
         HttpResult response = new HttpResult();
         String logprefix = "HttpsConn";
         
         try {
-           
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                    }};
+
+            // Ignore differences between given hostname and certificate hostname
+            HostnameVerifier hv = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(null, trustAllCerts, new SecureRandom());
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Sending Request to :" + targetUrl, "");
             URL url = new URL(targetUrl);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            con.setSSLSocketFactory(sc.getSocketFactory());
+            con.setHostnameVerifier(hv);
             con.setConnectTimeout(connectTimeout);
             con.setReadTimeout(waitTimeout);
             con.setRequestMethod(httpMethod);
-            con.setDoOutput(true);            
+            con.setDoOutput(true);
+            
                 
             //Set HTTP Headers
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Set HTTP Header", "");

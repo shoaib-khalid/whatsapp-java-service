@@ -8,6 +8,7 @@ import com.kalsym.whatsapp.service.utils.HttpResponse;
 import com.kalsym.whatsapp.service.utils.Logger;
 import com.kalsym.whatsapp.service.provider.facebookcloud.FacebookCloud;
 import com.kalsym.whatsapp.service.utils.DateTimeUtil;
+import com.kalsym.whatsapp.service.utils.HttpsPostConn;
 import com.kalsym.whatsapp.service.utils.HttpPostConn;
 import com.kalsym.whatsapp.service.utils.HttpResult;
 import org.springframework.http.HttpStatus;
@@ -148,7 +149,12 @@ public class WebhookController {
             HashMap httpHeader = new HashMap();
             httpHeader.put("Authorization", "Bearer accessToken");
             httpHeader.put("Content-Type", "application/json");
-            HttpResult result = HttpPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            HttpResult result = null;
+            if (url.startsWith("https")) {
+                result = HttpsPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            } else {
+                result = HttpPostConn.SendHttpRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Route result : " + result.toString());
         }
         return ResponseEntity.status(HttpStatus.OK).
@@ -284,7 +290,7 @@ public class WebhookController {
             HashMap httpHeader = new HashMap();
             httpHeader.put("Authorization", "Bearer accessToken");
             httpHeader.put("Content-Type", "application/json");
-            HttpResult result = HttpPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            HttpResult result = HttpsPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Route result : " + result.toString());
         }
         return ResponseEntity.status(HttpStatus.OK).
@@ -406,7 +412,7 @@ public class WebhookController {
             HashMap httpHeader = new HashMap();
             httpHeader.put("Authorization", "Bearer accessToken");
             httpHeader.put("Content-Type", "application/json");
-            HttpResult result = HttpPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            HttpResult result = HttpsPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Route result : " + result.toString());
         }
         return ResponseEntity.status(HttpStatus.OK).
