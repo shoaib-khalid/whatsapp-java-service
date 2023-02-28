@@ -128,9 +128,9 @@ public class WebhookController {
                     url = productionOrderServiceUrl;
                 } else if (replyId.startsWith("SUR")) {
                     url = surveyUrl;
-                } else if (replyId.startsWith("FAMILY-PREPAID")) {
+                } else if (replyId.toLowerCase().startsWith("familypre")) {
                     url = familyPlanPrepaidUrl;
-                } else if (replyId.startsWith("FAMILY-POSTPAID")) {
+                } else if (replyId.toLowerCase().startsWith("familypost")) {
                     url = familyPlanPostpaidUrl;
                 }
             }
@@ -403,10 +403,10 @@ public class WebhookController {
                     url = productionOrderServiceUrl;
                 } else if (replyId.startsWith("SUR")) {
                     url = surveyUrl;
-                } else if (replyId.startsWith("FAMILY-PREPAID")) {
+                } else if (replyId.toLowerCase().startsWith("familypre")) {
                     url = familyPlanPrepaidUrl;
-                } else if (replyId.startsWith("FAMILY-POSTPAID")) {
-                    url = familyPlanPostpaidUrl;
+                } else if (replyId.toLowerCase().startsWith("familypost")) {
+                    url = familyPlanPostpaidUrl;                
                 }
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserReply: " + replyId + " -> " + replyTitle);
