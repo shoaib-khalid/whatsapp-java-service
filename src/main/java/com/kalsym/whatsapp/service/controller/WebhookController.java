@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,9 +43,11 @@ public class WebhookController {
     @Value("${route.incoming.survey.url:https://api.symplified.it/whatsapp-survey-service/v1/message/survey/webhook}")
     private String surveyUrl;
     
-    @Value("${route.incoming.familyplan.url:http://209.58.160.107:9566/message/test/webhook}")
-    private String familyPlanUrl;
-    
+    @Value("${route.incoming.familyplan.prepaid.url:http://209.58.160.107:9566/message/prepaid/receive}")
+    private String familyPlanPrepaidUrl;
+
+    @Value("${route.incoming.familyplan.postpaid.url:http://209.58.160.107:9566/message/postpaid/receive}")
+    private String familyPlanPostpaidUrl;
 
     @PostMapping(path = {"/receive"}, name = "webhook-post")
     public ResponseEntity<HttpResponse> webhook(HttpServletRequest request, @RequestBody String json) throws Exception {
@@ -61,9 +64,9 @@ public class WebhookController {
         //user input : {"from":"60133731869","id":"wamid.HBgLNjAxMzM3MzE4NjkVAgASGBQzRUIwQkI3Q0FCRjIwQjNEMjg4OQA=","timestamp":"1660023849","text":{"body":"hello"},"type":"text"}
         //user select from list : {"context":{"from":"60125063299","id":"wamid.HBgLNjAxMzM3MzE4NjkVAgARGBJGQkVGQURCODBDRDQ0OUQ4M0IA"},"from":"60133731869","id":"wamid.HBgLNjAxMzM3MzE4NjkVAgASGBQzRUIwMDAxOURCMDk1RDhGNjk4QwA=","timestamp":"1660024660","type":"interactive","interactive":{"type":"list_reply","list_reply":{"id":"b4b3fac1-f593-4dff-ad64-2ad532cf4724","title":"Brew Coffee"}}}
 
-        JsonObject messages = null;
+        JsonObject messages = null;        
         try {
-            messages = changes.get("value").getAsJsonObject().get("messages").getAsJsonArray().get(0).getAsJsonObject();
+            messages = changes.get("value").getAsJsonObject().get("messages").getAsJsonArray().get(0).getAsJsonObject();            
         } catch (Exception ex) {
             //not a message
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "callback-message-get, not a message");
@@ -71,6 +74,14 @@ public class WebhookController {
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "callback-message-get, receive a status : " + statuses.toString());
             response.setSuccessStatus(HttpStatus.OK);
             return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        
+        String whatsappPhoneNo=null;
+        try {
+            whatsappPhoneNo = changes.get("value").getAsJsonObject().get("metadata").getAsJsonObject().get("display_phone_number").getAsString();
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "callback-message-get, whatsappPhoneNo: " + whatsappPhoneNo);
+        } catch (Exception ex) {
+            
         }
 
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "callback-message-get, MessageBody: " + messages);
@@ -110,26 +121,31 @@ public class WebhookController {
                 replyId = button.get("payload").getAsString();
                 replyTitle = button.get("text").getAsString();
             }
-            if (replyId != null) {
+            if (replyId != null) {                
                 if (replyId.startsWith("STG")) {
                     url = stagingOrderServiceUrl;
                 } else if (replyId.startsWith("PROD")) {
                     url = productionOrderServiceUrl;
                 } else if (replyId.startsWith("SUR")) {
                     url = surveyUrl;
-                } else if (replyId.startsWith("FAMILY")) {
-                    url = familyPlanUrl;
+                } else if (replyId.startsWith("FAMILY-PREPAID")) {
+                    url = familyPlanPrepaidUrl;
+                } else if (replyId.startsWith("FAMILY-POSTPAID")) {
+                    url = familyPlanPostpaidUrl;
                 }
             }
-            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserReply: " + replyId + " -> " + replyTitle);
+            Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserReply: " + replyId + " -> " + replyTitle+" RouteUrl:"+url);
         } else {
             //user input
             type = "input";
             phone = messages.get("from").getAsString();
             userInput = messages.get("text").getAsJsonObject().get("body").getAsString();
-            if (userInput.toLowerCase().startsWith("family")) {
+            if (userInput.toLowerCase().startsWith("familypre")) {
                //for family plan
-               url = familyPlanUrl;
+               url = familyPlanPrepaidUrl;
+            } else if (userInput.equalsIgnoreCase("familypost")) {
+                //for family plan
+                url = familyPlanPostpaidUrl;
             } else if (userInput.equalsIgnoreCase("store")) {
                 //use default
                 url = defaultRouteUrl;
@@ -387,8 +403,10 @@ public class WebhookController {
                     url = productionOrderServiceUrl;
                 } else if (replyId.startsWith("SUR")) {
                     url = surveyUrl;
-                } else if (replyId.startsWith("FAMILY")) {
-                    url = familyPlanUrl;
+                } else if (replyId.startsWith("FAMILY-PREPAID")) {
+                    url = familyPlanPrepaidUrl;
+                } else if (replyId.startsWith("FAMILY-POSTPAID")) {
+                    url = familyPlanPostpaidUrl;
                 }
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserReply: " + replyId + " -> " + replyTitle);
@@ -397,8 +415,15 @@ public class WebhookController {
             type = "input";
             phone = messages.get("from").getAsString();
             userInput = messages.get("text").getAsJsonObject().get("body").getAsString();
-            if (!userInput.equalsIgnoreCase("store")) {
-                url = null;
+             if (userInput.toLowerCase().startsWith("familypre")) {
+               //for family plan
+               url = familyPlanPrepaidUrl;
+            } else if (userInput.equalsIgnoreCase("familypost")) {
+                //for family plan
+                url = familyPlanPostpaidUrl;
+            } else if (userInput.equalsIgnoreCase("store")) {
+                //use default
+                url = defaultRouteUrl;
             }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Incoming message. Msisdn:" + phone + " UserInput:" + userInput);
         }
@@ -419,6 +444,15 @@ public class WebhookController {
 
                 body(response);
 
+    }
+    
+    private String findKeyword(String userInput) {
+        String[] temp = userInput.split("_");
+        if (temp.length>0) {
+            return temp[0];
+        } else {
+            return userInput;
+        }        
     }
 
 }

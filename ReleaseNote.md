@@ -2,10 +2,12 @@
 ##################################################
 # Version 1.3.0| 27-Feb-2023
 ##################################################
-New webhook url for FamilyPlan
+New webhook url for FamilyPlan Prepaid & Postpaid
+
 
 ##Config changes:
-route.incoming.familyplan.url=http://209.58.160.107:9566/message/test/webhook
+route.incoming.familyplan.prepaid.url=http://209.58.160.107:9566/message/prepaid/webhook
+route.incoming.familyplan.postpaid.url=http://209.58.160.107:9566/message/postpaid/webhook
 
 
 ##################################################
