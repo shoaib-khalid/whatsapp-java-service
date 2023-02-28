@@ -437,7 +437,12 @@ public class WebhookController {
             HashMap httpHeader = new HashMap();
             httpHeader.put("Authorization", "Bearer accessToken");
             httpHeader.put("Content-Type", "application/json");
-            HttpResult result = HttpsPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            HttpResult result = null;
+            if (url.startsWith("https")) {
+                result = HttpsPostConn.SendHttpsRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            } else {
+                result = HttpPostConn.SendHttpRequest("POST", phone, url, httpHeader, json.toString(), connectTimeout, waitTimeout);
+            }
             Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "Route result : " + result.toString());
         }
         return ResponseEntity.status(HttpStatus.OK).
