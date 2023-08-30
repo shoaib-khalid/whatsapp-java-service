@@ -41,6 +41,12 @@ public class PushTemplateMessageController {
     
     @Value("${whatsapp.push.token.92516120000:Bearer EAAG9yFXAfwABACu6stKw1YOpqMA1KJ8lVnLLl0SCdFI8vf4SxVa39x18tjIrxG5rrBgDaSjjI2bLZAW4mlv1XlOKk9Eakc2pGDZBi8YK00qZBCkUiSM8hdwiPsm54TW0C5nTZBZCxKgI2gtG2CSdMdDoxpCKFoN3gWHHvq65mcZAHSt4S7z2tt19w1fsX5AZAXFnSaBju0PZAAZDZD}")
     private String whatsappPushTokenEasyDukan;
+
+    @Value("${whatsapp.push.url.601141218355:https://graph.facebook.com/v17.0/110598908806277/messages}")
+    private String whatsappPushUrlEkedai;
+
+    @Value("${whatsapp.push.token.601141218355:Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD}")
+    private String whatsappPushTokenEkedai;
     
     @PostMapping(path = {"/push"}, name = "push-template-message-post")   
     public ResponseEntity<HttpResponse> pushMessage(HttpServletRequest request,
@@ -52,22 +58,22 @@ public class PushTemplateMessageController {
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, URL:  " + request.getRequestURI());
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, messageBody: ", messageBody.toString());
         
-        String url = whatsappPushUrl;
-        String token = whatsappPushToken;
-        if (senderMsisdn!=null && senderMsisdn.equals("60356300997")) {
-            url = whatsappPushUrlDineIn;
-            token = whatsappPushTokenDineIn;
-        } 
-                
-        if (messageBody.getTemplate().getName().startsWith("dinein")) {
-            url = whatsappPushUrlDineIn;
-            token = whatsappPushTokenDineIn;
-        }
-        
-        if (messageBody.getTemplate().getName().startsWith("easydukan")) {
-            url = whatsappPushUrlEasyDukan;
-            token = whatsappPushTokenEasyDukan;
-        }
+        String url = whatsappPushUrlEkedai;
+        String token = whatsappPushTokenEkedai;
+//        if (senderMsisdn!=null && senderMsisdn.equals("60356300997")) {
+//            url = whatsappPushUrlDineIn;
+//            token = whatsappPushTokenDineIn;
+//        }
+//
+//        if (messageBody.getTemplate().getName().startsWith("dinein")) {
+//            url = whatsappPushUrlDineIn;
+//            token = whatsappPushTokenDineIn;
+//        }
+//
+//        if (messageBody.getTemplate().getName().startsWith("easydukan")) {
+//            url = whatsappPushUrlEasyDukan;
+//            token = whatsappPushTokenEasyDukan;
+//        }
         
         try {
             HttpResult result = FacebookCloud.sendTemplateMessage(url, token, messageBody);            
