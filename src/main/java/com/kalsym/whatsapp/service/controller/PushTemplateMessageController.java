@@ -24,10 +24,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RequestMapping(path = "/templatemessage")
 public class PushTemplateMessageController {
     
-    @Value("${whatsapp.push.url.60125063299:https://graph.facebook.com/v13.0/101552592607485/messages}")
+    @Value("${whatsapp.push.url.60125063299:https://graph.facebook.com/v17.0/101552592607485/messages}")
     private String whatsappPushUrl;
     
-    @Value("${whatsapp.push.token.60125063299:Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD}")
+    @Value("${whatsapp.push.token.60125063299:Bearer EAAH0cEAnrjABOyNKyR0dNlwbSzsgSZBpZCRZBmppnE8gteTr27O8b6Ag2jYVprRJxSj4gzTJ4E81Vgp846ZBexMT4e3fZCZBK6L6ZBLSEaKZAkW8zvmdb49ANnqCtcs1nuSoRANj8101dav7RA5WtTuzvZAp2hB7sTjFZAJ5ZAIpwqdTZA2ODkQzcduChZA8tqQ0IIIW7}")
     private String whatsappPushToken;
     
     @Value("${whatsapp.push.url.60356300997:https://graph.facebook.com/v13.0/104564742449784/messages}")
@@ -45,7 +45,7 @@ public class PushTemplateMessageController {
     @Value("${whatsapp.push.url.601141218355:https://graph.facebook.com/v17.0/110598908806277/messages}")
     private String whatsappPushUrlEkedai;
 
-    @Value("${whatsapp.push.token.601141218355:Bearer EAAFqZCjx0n6IBALKZCGohhKmZCQ0M5vNr4Gfk2wiZC55xehGQkaUlyHZBP0G6q3jiguZCvvfpbayN8cvcXjlxonHlzhdFLJmeTRmvy0yndLB7CZCVxWL4AwUlTU0GbkXnA72ZA7TXPfRxv8DddhBVswMQZBnwpLBhlDqf9yZCq6Ug6rOKdHCY8vaMYZA1tteD8GKr0IolRgSGOECQZDZD}")
+    @Value("${whatsapp.push.token.601141218355:Bearer EAAH0cEAnrjABOyNKyR0dNlwbSzsgSZBpZCRZBmppnE8gteTr27O8b6Ag2jYVprRJxSj4gzTJ4E81Vgp846ZBexMT4e3fZCZBK6L6ZBLSEaKZAkW8zvmdb49ANnqCtcs1nuSoRANj8101dav7RA5WtTuzvZAp2hB7sTjFZAJ5ZAIpwqdTZA2ODkQzcduChZA8tqQ0IIIW7}")
     private String whatsappPushTokenEkedai;
     
     @PostMapping(path = {"/push"}, name = "push-template-message-post")   
@@ -56,7 +56,7 @@ public class PushTemplateMessageController {
         HttpResponse response = new HttpResponse(request.getRequestURI());
 
         Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, URL:  " + request.getRequestURI());
-        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, messageBody: ", messageBody.toString());
+        Logger.application.info(Logger.pattern, WhatsappWrapperServiceApplication.VERSION, logprefix, "push-template-message-post, messageBody: " + messageBody.toString());
         
         String url = whatsappPushUrlEkedai;
         String token = whatsappPushTokenEkedai;
