@@ -42,10 +42,10 @@ public class PushTemplateMessageController {
     @Value("${whatsapp.push.token.92516120000:Bearer EAAG9yFXAfwABACu6stKw1YOpqMA1KJ8lVnLLl0SCdFI8vf4SxVa39x18tjIrxG5rrBgDaSjjI2bLZAW4mlv1XlOKk9Eakc2pGDZBi8YK00qZBCkUiSM8hdwiPsm54TW0C5nTZBZCxKgI2gtG2CSdMdDoxpCKFoN3gWHHvq65mcZAHSt4S7z2tt19w1fsX5AZAXFnSaBju0PZAAZDZD}")
     private String whatsappPushTokenEasyDukan;
 
-    @Value("${whatsapp.push.url.601141218355:https://graph.facebook.com/v17.0/110598908806277/messages}")
+    @Value("${whatsapp.push.url.601141218357:https://graph.facebook.com/v17.0/111749948561056/messages}")
     private String whatsappPushUrlEkedai;
 
-    @Value("${whatsapp.push.token.601141218355:Bearer EAAH0cEAnrjABOyNKyR0dNlwbSzsgSZBpZCRZBmppnE8gteTr27O8b6Ag2jYVprRJxSj4gzTJ4E81Vgp846ZBexMT4e3fZCZBK6L6ZBLSEaKZAkW8zvmdb49ANnqCtcs1nuSoRANj8101dav7RA5WtTuzvZAp2hB7sTjFZAJ5ZAIpwqdTZA2ODkQzcduChZA8tqQ0IIIW7}")
+    @Value("${whatsapp.push.token.601141218355:Bearer EAArjdpMWmdIBOweE64EFdrC4JDDdemXJlgh6kQAXC7UySthEM3iUuBqR6n9wOIl9h54XgbDM9iFq22eDZAYXSpcsnVtxpUY2MLPtjYZCAohC90eLuIUPcQGGorskGgCtSrY1S2SwZBat06lyAJ0CDdZAKQv7ZBaicP3TnAojRDRBK1kTyOZAjOtz1yR4GcQkhbeCw0i6VLDvneV7z8OlxZAfnkutSg2AiieXu3DAoUZD}")
     private String whatsappPushTokenEkedai;
     
     @PostMapping(path = {"/push"}, name = "push-template-message-post")   
